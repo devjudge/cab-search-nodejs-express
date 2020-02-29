@@ -20,7 +20,7 @@ const sql_create = `CREATE TABLE IF NOT EXISTS drivers (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name VARCHAR(100) NOT NULL,
   email VARCHAR(100) NOT NULL UNIQUE,
-  phone_number CHAR(10) NOT NULL UNIQUE,
+  phone_number INT(11) NOT NULL UNIQUE,
   license_number VARCHAR(100) NOT NULL UNIQUE,
   car_number VARCHAR(15) NOT NULL UNIQUE,
   latitude DOUBLE NULL,
