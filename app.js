@@ -22,7 +22,7 @@ app.post('/api/v1/driver/register/', (req, res) => {
   var resp = validate_existence(name, 'Name');
   if (resp !== true) {
     return res.status(400).send({
-      success: 'failure',
+      status: 'failure',
       reason: resp
     });
   }
@@ -30,7 +30,7 @@ app.post('/api/v1/driver/register/', (req, res) => {
   resp = validate_existence(email, 'Email');
   if (resp !== true) {
     return res.status(400).send({
-      success: 'failure',
+      status: 'failure',
       reason: resp
     });
   }
@@ -38,7 +38,7 @@ app.post('/api/v1/driver/register/', (req, res) => {
   resp = validate_length(phone_number, 7, 'Phone Number')
   if (resp !== true) {
     return res.status(400).send({
-      success: 'failure',
+      status: 'failure',
       reason: resp
     });
   }
@@ -46,7 +46,7 @@ app.post('/api/v1/driver/register/', (req, res) => {
   resp = validate_existence(license_number, 'License Number');
   if (resp !== true) {
     return res.status(400).send({
-      success: 'failure',
+      status: 'failure',
       reason: resp
     });
   }
@@ -54,27 +54,27 @@ app.post('/api/v1/driver/register/', (req, res) => {
   resp = validate_existence(car_number, 'Car Number');
   if (resp !== true) {
     return res.status(400).send({
-      success: 'failure',
+      status: 'failure',
       reason: resp
     });
   }
 
   get_driver_db_from_other_info(email, phone_number, car_number, license_number)
   .catch((err) => res.status(500).json({
-    'success': 'failure',
+    'status': 'failure',
     'reason': 'Error occurred!'
   }))
   .then((row) => {
       if (row) {
         return res.status(400).json({
-          'success': 'failure',
+          'status': 'failure',
           'reason': 'Driver with the above details already exists!'
         })
       } else {
         insert_driver(req.body)
         .catch((err) => {
           return res.status(500).json({
-            'success': 'failure',
+            'status': 'failure',
             'reason': 'Error occurred!'
           })
         })
@@ -82,7 +82,7 @@ app.post('/api/v1/driver/register/', (req, res) => {
           get_driver_by_email(email)
           .catch((err) => {
             return res.status(500).json({
-              'success': 'failure',
+              'status': 'failure',
               'reason': 'Error occurred!'
             })
           })
@@ -104,7 +104,7 @@ app.post('/api/v1/driver/:id/sendLocation/', (req, res) => {
   var resp = validate_existence(latitude, 'Latitude');
   if (resp !== true) {
     return res.status(400).send({
-      success: 'failure',
+      status: 'failure',
       reason: resp
     });
   }
@@ -112,21 +112,21 @@ app.post('/api/v1/driver/:id/sendLocation/', (req, res) => {
   resp = validate_existence(longitude, 'Longitude');
   if (resp !== true) {
     return res.status(404).send({
-      success: 'failure',
+      status: 'failure',
       reason: resp
     });
   }
 
   get_driver_db(driver_id)
   .catch(() => res.status(400).json({
-    'success': 'failure',
+    'status': 'failure',
     'reason': 'Driver not found!'
   }))
   .then((row) => {
     update_driver_details(latitude, longitude, driver_id)
     .catch((err) => {
       res.status(500).json({
-        'success': 'failure',
+        'status': 'failure',
         'reason': 'Error occurred!'
       })  
     })
@@ -141,7 +141,7 @@ app.get('/api/v1/driver/:id/', (req, res) => {
   var driver_id = req.params.id;
   get_driver_db(driver_id)
   .catch(() => res.status(400).json({
-    'success': 'failure',
+    'status': 'failure',
     'reason': 'Driver not found!'
   }))
   .then((row) => res.status(200).send(row));
@@ -155,7 +155,7 @@ app.post('/api/v1/passenger/available_cabs/', (req, res) => {
   var resp = validate_existence(latitude, 'Latitude');
   if (resp !== true) {
     return res.status(400).send({
-      success: 'failure',
+      status: 'failure',
       reason: resp
     });
   }
@@ -163,13 +163,13 @@ app.post('/api/v1/passenger/available_cabs/', (req, res) => {
   resp = validate_existence(longitude, 'Longitude');
   if (resp !== true) {
     return res.status(400).send({
-      success: 'failure',
+      status: 'failure',
       reason: resp
     });
   }
   get_available_cabs_v2()
   .catch((err) => res.status(500).json({
-    'success': 'failure',
+    'status': 'failure',
     'reason': 'Error occurred'
   }))
   .then((rows) => {
