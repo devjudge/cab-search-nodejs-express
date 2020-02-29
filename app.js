@@ -58,6 +58,8 @@ app.post('/api/v1/driver/register/', (req, res) => {
       reason: resp
     });
   }
+  
+  phone_number = phone_number.toString();
 
   get_driver_db_from_other_info(email, phone_number, car_number, license_number)
   .catch((err) => res.status(500).json({
@@ -222,7 +224,7 @@ var validate_existence = function(input, field_display_name) {
 var validate_length = function(input, len, field_display_name) {
   var resp = validate_existence(input, field_display_name);
   if (resp === true) {
-    if (input.length != len) {
+    if (input.toString().length != len) {
       return field_display_name + ' must be of ' + len + ' characters!';      
     }
     return true;
