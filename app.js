@@ -191,6 +191,7 @@ app.post('/api/v1/passenger/available_cabs/', (req, res) => {
           +
           Math.sin(latitudeRadian) * Math.sin(rowLatitudeRadian)
         );
+        console.log(distance);
 
         if (distance <= 4) {
           results.push({
@@ -203,18 +204,10 @@ app.post('/api/v1/passenger/available_cabs/', (req, res) => {
       }
 
       results = results.sort((a, b) => (a.distance < b.distance) ? 1 : ((b.distance < a.distance) ? -1 : 0)); 
-      
-      if (results && results.length === 0) {
-        return res.status(400).json({        
-          'message': 'No cabs available!'
-        })
-      } else {
-        return res.status(200).json({
-          'available_cabs': results
-        });
-      }
+
+      return res.status(200).send(results[0]);
     } else {
-      return res.status(200).json({        
+      return res.status(400).json({        
         'message': 'No cabs available!'
       })
     }
